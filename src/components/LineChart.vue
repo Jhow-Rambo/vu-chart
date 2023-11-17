@@ -13,9 +13,20 @@
 				</defs>
 				<path :d="line.path" :stroke="line.color" :stroke-width="line.width" fill="none" />
 				<g>
-					<circle v-for="(point, index) in line.data" :key="index" :cx="xScale(point.x)" :cy="yScale(point.y)"
-						:r="4" :fill="line.color" @mouseover="pointHovered = { ...point, id: line.id }"
-						@mouseleave="pointHovered = null" />
+					<g v-if="enablePoint">
+						<circle 
+							v-for="(point, index) in line.data" 
+							:key="index" 
+							:cx="xScale(point.x)" 
+							:cy="yScale(point.y)"
+							:r="pointRadius" 
+							:fill="pointColor"
+							:stroke="pointBorderColor"
+							:stroke-width="pointBorderWidth"
+							@mouseover="pointHovered = { ...point, id: line.id }"
+							@mouseleave="pointHovered = null" 
+						/>
+					</g>
 
 					<g v-if="enableCrosshair && pointHovered && pointHovered.id === line.id" >
 						<line
@@ -76,6 +87,11 @@ interface ChartProps {
 	axisColor?: string;
 	gridColor?: string;
 	crosshairType?: string;
+	enablePoint?: boolean;
+	pointRadius?: number;
+	pointColor?: string;
+	pointBorderColor?: string;
+	pointBorderWidth?: number;
 }
 
 interface GeneratorFactory {
@@ -84,7 +100,7 @@ interface GeneratorFactory {
 }
 
 // Destructure props directly in the setup function
-const { width, height, margin, series, xLabel, yLabel, grid, hasGradient, curveType, enableCrosshair, axisColor, gridColor, crosshairType } = defineProps<ChartProps>();
+const { width, height, margin, series, xLabel, yLabel, grid, hasGradient, curveType, enableCrosshair, axisColor, gridColor, crosshairType, enablePoint, pointRadius, pointColor, pointBorderColor, pointBorderWidth } = defineProps<ChartProps>();
 
 const generatorFactories: Record<'linear' | 'basis' | 'step' | 'cardinal' | 'catmullRom' | 'monotoneX' | 'monotoneY' | 'natural' | 'stepAfter' | 'stepBefore', GeneratorFactory> = {
 	linear: { createLine: d3.line(), createArea: d3.area() },

@@ -31,12 +31,17 @@
         xLabel="Tempo"
         yLabel="Valor"
         :hasGradient="true"
-        curveType="natural"
+        curveType="cardinal"
         :enableCrosshair="true"
         crosshairType="cross"
         axisColor="#000"
         :grid="false"
         gridColor="#e2e"
+        :enablePoint="true"
+        :pointRadius="5"
+        pointColor="#fff"
+        pointBorderColor="#000"
+        :pointBorderWidth="1"
     />
     </div>
   </template>
