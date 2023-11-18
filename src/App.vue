@@ -44,6 +44,8 @@
         :pointBorderWidth="1"
         :enableArea="true"
         :areaOpacity="0.2"
+        crosshairColor="#000"
+        :crossHairDashArray="5"
     />
     </div>
   </template>

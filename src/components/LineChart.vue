@@ -47,7 +47,8 @@
 							:y1="crosshairLine.y1"
 							:x2="crosshairLine.x2"
 							:y2="crosshairLine.y2"
-							stroke-dasharray="4" stroke="#ccc"
+							:stroke-dasharray="crossHairDashArray || 4" 
+							:stroke="crosshairColor || '#000'"
 						/>
 					</g>
 
@@ -134,6 +135,8 @@ interface ChartProps {
 	axisColor?: string;
 	gridColor?: string;
 	crosshairType?: string;
+	crossHairDashArray?: number;
+	crosshairColor?: string;
 	enablePoint?: boolean;
 	pointRadius?: number;
 	pointColor?: string;
@@ -149,7 +152,7 @@ interface GeneratorFactory {
 }
 
 // Destructure props directly in the setup function
-const { width, height, margin, series, xLabel, yLabel, grid, hasGradient, curveType, enableCrosshair, axisColor, gridColor, crosshairType, enablePoint, pointRadius, pointColor, pointBorderColor, pointBorderWidth, enableArea, areaOpacity } = defineProps<ChartProps>();
+const { width, height, margin, series, xLabel, yLabel, grid, hasGradient, curveType, enableCrosshair, axisColor, gridColor, crosshairType, crossHairDashArray, crosshairColor, enablePoint, pointRadius, pointColor, pointBorderColor, pointBorderWidth, enableArea, areaOpacity } = defineProps<ChartProps>();
 
 const generatorFactories: Record<'linear' | 'basis' | 'step' | 'cardinal' | 'catmullRom' | 'monotoneX' | 'monotoneY' | 'natural' | 'stepAfter' | 'stepBefore', GeneratorFactory> = {
 	linear: { createLine: d3.line(), createArea: d3.area() },
