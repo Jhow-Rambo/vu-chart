@@ -69,12 +69,48 @@
 				<g class="y-grid" :transform="`translate(${margin.left}, 0)`"></g>
 			</g>
 
+			<defs>
+				<!-- Define the shadow filter -->
+				<filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+					<feDropShadow dx="0.5" dy="0.5" stdDeviation="0.5" flood-color="#333" />
+				</filter>
+			</defs>
+
 			<!-- Tooltip -->
 			<g v-if="pointHovered">
-				<rect :x="xScale(pointHovered.x) + margin.left - 40" :y="yScale(pointHovered.y) + margin.top - 40"
-					width="80" height="30" rx="5" ry="5" fill="#f9f9f9" stroke="#333" stroke-width="1" />
-				<text :x="xScale(pointHovered.x) + margin.left" :y="yScale(pointHovered.y) + margin.top - 23"
-					text-anchor="middle" dy="0.3em">{{ `(${pointHovered.x}, ${pointHovered.y})` }}</text>
+				<rect
+					:x="xScale(pointHovered.x) + margin.left - 40"
+					:y="yScale(pointHovered.y) + margin.top - 40"
+					width="140"
+					height="30"
+					rx="5"
+					ry="5"
+					fill="#fff"
+					stroke="#333"
+					stroke-width="0"
+					:filter="'url(#shadow)'"
+				/>
+				<!-- Color Square -->
+				<rect
+					:x="xScale(pointHovered.x) + margin.left - 35"
+					:y="yScale(pointHovered.y) + margin.top - 31"
+					width="12"
+					height="12"
+					:fill="lineColor(pointHovered.id)"
+				/>
+				<!-- Coordinates Text -->
+				<text
+					:x="xScale(pointHovered.x) + margin.left - 15"
+					:y="yScale(pointHovered.y) + margin.top - 25.5"
+					text-anchor="start"
+					dy="0.3em"
+
+				>
+					<tspan>x:  </tspan>
+					<tspan stroke="#000" stroke-width="1" font-size="small">{{ pointHovered.x.toFixed(2) }}</tspan>
+					<tspan>, y:  </tspan>
+					<tspan stroke="#000" stroke-width="1" font-size="small">{{ pointHovered.y.toFixed(2) }}</tspan>
+				</text>
 			</g>
 		</svg>
 	</div>
@@ -149,6 +185,11 @@ const yScale = computed(() => {
 		.domain([d3.min(allData, (d) => d.y) ?? 0, d3.max(allData, (d) => d.y) ?? 1])
 		.range([height - margin.bottom, margin.top]);
 });
+
+const lineColor = (lineId) => {
+    const line = lines.value.find((l) => l.id === lineId);
+    return line ? line.color : 'black';
+};
 
 const lines = computed(() =>
 	series.map((serie, index) => ({
