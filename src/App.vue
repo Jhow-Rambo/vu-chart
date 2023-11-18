@@ -30,7 +30,7 @@
         ]"
         xLabel="Tempo"
         yLabel="Valor"
-        :hasGradient="true"
+        :hasGradient="false"
         curveType="cardinal"
         :enableCrosshair="true"
         crosshairType="cross"
@@ -42,6 +42,8 @@
         pointColor="#fff"
         pointBorderColor="#000"
         :pointBorderWidth="1"
+        :enableArea="true"
+        :areaOpacity="0.2"
     />
     </div>
   </template>

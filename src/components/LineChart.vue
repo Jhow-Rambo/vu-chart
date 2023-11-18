@@ -11,7 +11,18 @@
 						<stop offset="100%" stop-color="white" stop-opacity="0" />
 					</linearGradient>
 				</defs>
+
 				<path :d="line.path" :stroke="line.color" :stroke-width="line.width" fill="none" />
+
+				<!-- Area Fill -->
+				<g v-if="enableArea">
+					<path
+						:d="line.path + ` L${width - margin.right},${height - margin.bottom} L${margin.left},${height - margin.bottom} Z`"
+						:fill="line.color"
+						:opacity="areaOpacity || 0.2"
+					/>
+				</g>
+
 				<g>
 					<g v-if="enablePoint">
 						<circle 
@@ -92,6 +103,8 @@ interface ChartProps {
 	pointColor?: string;
 	pointBorderColor?: string;
 	pointBorderWidth?: number;
+	enableArea?: boolean;
+	areaOpacity?: number;
 }
 
 interface GeneratorFactory {
@@ -100,7 +113,7 @@ interface GeneratorFactory {
 }
 
 // Destructure props directly in the setup function
-const { width, height, margin, series, xLabel, yLabel, grid, hasGradient, curveType, enableCrosshair, axisColor, gridColor, crosshairType, enablePoint, pointRadius, pointColor, pointBorderColor, pointBorderWidth } = defineProps<ChartProps>();
+const { width, height, margin, series, xLabel, yLabel, grid, hasGradient, curveType, enableCrosshair, axisColor, gridColor, crosshairType, enablePoint, pointRadius, pointColor, pointBorderColor, pointBorderWidth, enableArea, areaOpacity } = defineProps<ChartProps>();
 
 const generatorFactories: Record<'linear' | 'basis' | 'step' | 'cardinal' | 'catmullRom' | 'monotoneX' | 'monotoneY' | 'natural' | 'stepAfter' | 'stepBefore', GeneratorFactory> = {
 	linear: { createLine: d3.line(), createArea: d3.area() },
